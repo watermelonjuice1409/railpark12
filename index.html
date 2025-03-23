@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
+   
+    
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
       * {
         box-sizing: border-box;
         margin: 0px;
         padding: 0px;
+        
       }
+      .toggle{
+        position:relative;
+        width:40px;
+        height:40px;
+        background:black;
+        box-shadow: 0 10px 20px rbga(0,0,0,0.1);
+        border-radius:5px;
+        display:flex;
+        justify-content: center;
+        align-items: end;
+        padding:9px;
+        cursor:pointer;
+      }
+      .toggle span{
+        position:absolute;
+        width:25px;
+        height:4px;
+        background:white;
+        transition:1s;
 
+      }
+      .toggle span:nth-child(1){
+        transform: translateY(-16px);
+      }
+      .toggle.active span:nth-child(2){
+        transform: translateY(-8px) rotate(-45deg);
+      }
+      .toggle.active span:nth-child(1){
+        transform: translateY(-8px) rotate(45deg);
+      }
+      .toggle.active span:nth-child(3){
+        display: none;
+      }
+      .toggle li {
+        display: none;
+      }
+      .toggle.active li {
+        display: block;
+      }
       body {
         font-family: Verdana, sans-serif;
         margin: 0;
@@ -17,7 +59,11 @@
         align-items: center;
         flex-direction: column; /* Stack elements vertically */
         height: 100%;
-        padding-top: 80px; /* Add padding to push content down (space for the navbar) */
+        padding-top: 80px;
+        overflow-x: hidden; 
+        
+        
+
       }
 
       img {
@@ -209,22 +255,25 @@
 
       /* Caption text */
       .text {
-        color: #f2f2f2;
+        color:black;
         font-size: 20px;
         padding: 8px 12px;
         position: absolute;
         bottom: 100px;
         width: 100%;
         text-align: center;
+        position: relative;
+        left:-500px;
       }
 
       /* Number text (1/3 etc) */
-      .numbertext {
-        color: #f2f2f2;
-        font-size: 12px;
+      .rail {
+        color: black;
+        font-size: 50px;
         padding: 8px 12px;
         position: absolute;
-        top: 0;
+        top: -80px;
+        left:-150px;
       }
 
       /* The dots/bullets/indicators */
@@ -415,10 +464,11 @@
         pointer-events: none;
         transition: opacity 0.3s ease;
       }
-
+      
       .entire {
         height: 550px;
         width: 450px;
+        
       }
 
       .entire .logo-container1 {
@@ -430,6 +480,8 @@
       .entire1 {
         height: 300px;
         width: 500px;
+        transform-style:preserve-3d;
+        
       }
 
       .entire1 .logo-container1 {
@@ -609,24 +661,47 @@
     display:grid;
     grid-template-columns:442px 442px;
     justify-content: end;
-
+    position:relative;
+    top:-100px;
 
   }  
   .grid p{
     color:white;
 
   }
+  .grid a{
+    color:white;
+    text-decoration: none;
+  }
 
     </style>
   </head>
   <body>
     <div class="navbar">
-      <div class="menu-icon">☰</div>
+      <div class="menu">
+<div class="toggle">
+  <span>
+
+  </span>
+  <span></span>
+  <span></span>
+  <ul class="submenu">
+    <li>Home</li>
+    <li>Membership</li>
+    <li>Resources</li>
+    <li>News</li>
+    <li>About</li>
+    <li>About</li>
+    <li>Book a tour</li>
+    <li>Shop</li>
+  </ul>
+</div>
+      </div>
       <div class="nav-links">
         <a href="#">VISIT</a>
         <div class="box">
           <div class="logo-container1">
-            <img class="logo-default" src="image copy 4.png" alt="Logo" />
+            <img class="logo-default" src="image.png" alt="Logo" />
             <div class="logo-container2">
               <img
                 class="logo-hover"
@@ -647,9 +722,9 @@
 
     <div class="slideshow-container">
       <div class="mySlides fade">
-        <div class="numbertext">Phase One is free & open daily</div>
+        <div class="rail">The Rail<br> Park</div>
 
-        <img src="image.png" />
+        <img src="image copy 4.png" />
         <div class="text">
           Phase One is <br />free & open<br />
           daily
@@ -706,6 +781,7 @@
 
       <p class="blacksmall">And there's a lot more to do</p>
     </div>
+    <div class="wrapper">
     <div class="entire">
       <div class="logo-container1">
         <img class="logo-default" src="theviaduct.png" alt="Logo" />
@@ -736,10 +812,11 @@
           </div>
         </div>
       </div>
+      </div>
 
       <div class="events" >
         <div class="box1">
-        <img class="one"  id="hover" src="image copy 8.png"/>
+        <img class="one"  id="hover" src="image copy 6.png"/>
         <p>Thursday,April 10,2025</p>
         <p>Volunteer<br> Happy Hour</p>
         <p>Details</p>
@@ -755,7 +832,7 @@
 
         </div>
         <div class="box3">
-        <img class="three" id="hover" src="image copy 6.png"/>
+        <img class="three" id="hover" src="image copy 8.png"/>
         <p>Saturday,April 26,2025</p>
         <p>Environmental <br>Justice Tour</p>
         <p>Details</p>
@@ -783,7 +860,12 @@
       </div>
     <div class="email">
       <p>Be the first one to know about news, events and progress</p>
-      <input type="email" id="email" name="email" placeholder="Enter your Email" required >
+      <form id="emailForm">
+        <input type="email" id="emailInput" placeholder="Enter your email" required>
+        <button type="submit">Submit</button>
+        <p class="message" id="message"></p>
+    </form>
+      
 
     </div>
     <div class="footer">
@@ -816,15 +898,53 @@
     <div class="grid4"><p>Office</p><br><br> <a  class="maps" href="https://goo.gl/maps/CTg6nuB66NcDZDAs6">1219 Vine Street, Suite M<br>
       Philadelphia, PA 19107</a></div>
       <div class="grid5">
-        <p>Translations</p>p><br><br>
+        <p>Translations</p><br><br>
+        <a  class="translation" href="#">Español / 中文</a>
+          
+
           </div>
     <div class="grid6">
+      <p>Follow Along</p><br><br>
+      <i class='fab fa-instagram' style='font-size:36px;color:white'></i>
+      <i class="fa-brands fa-twitter" style='font-size:36px;color:white'></i>
+      <i class="fa-brands fa-facebook" style='font-size:36px;color:white'></i>
       
     </div>
 
       </div>
-    </div>
-    <script>
+    </div> <script>
+      document.getElementById("emailForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const emailInput1 = document.getElementsById("emailInput");
+            const message = document.getElementById("message");
+            const email = emailInput.value.trim();
+            
+            
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            if (!emailRegex.test(email)) {
+                message.textContent = "Invalid email format!";
+                message.style.color = "red";
+                return;
+            }
+            
+            
+            localStorage.setItem("userEmail", email);
+            message.textContent = "Email saved successfully!";
+            message.style.color = "green";
+            
+            
+            
+            emailInput.value = "";
+        });
+
+        
+      const menutoggle= document.querySelector('.toggle');
+      menutoggle.addEventListener('click', () => {
+        menutoggle.classList.toggle('active')
+      })
+      
       let slideIndex = 1;
       showSlides(slideIndex);
 
