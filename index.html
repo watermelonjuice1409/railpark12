@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      body {
+        font-family: Verdana, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; /* Stack elements vertically */
+        height: 100%;
+        padding-top: 80px; /* Add padding to push content down (space for the navbar) */
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: white; /* Add background to avoid transparency overlap */
+      }
+
+      /* HAMBURGER MENU */
+      .menu-icon {
+        font-size: 48px;
+        cursor: pointer;
+      }
+
+      .menu-icon:hover {
+        color: #0cee72;
+      }
+
+      /* NAV LINKS */
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+        font-weight: 100;
+      }
+
+      .box {
+        height: 40px;
+        width: 40px;
+      }
+      .logo-container1 {
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+
+
+      
+      .logo-container1 img,
+      .logo-container2 img {
+        height: 100%;
+        width: 100%;
+      }
+
+      .logo-container2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.4s ease-out;
+        height: 100%;
+        width: 100%;
+      }
+
+      .logo-container1:hover .logo-container2 {
+        opacity: 1;
+        visibility: visible;
+      }
+      .logo-container1:hover .logo-container1 {
+        display: none;
+      }
+
+      /* RIGHT SECTION */
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* DONATE BUTTON */
+      .donate {
+        background: none;
+        border: 1px solid black;
+        padding: 5px 15px;
+        width: 140px;
+        height: 46px;
+        cursor: pointer;
+        border-radius: 25px;
+        font-size: 17px;
+        font-weight: 100;
+      }
+
+      .donate:hover {
+        border: 1px solid #0cee72;
+        background-color: #0cee72;
+        color: white;
+      }
+
+      /* LANGUAGE TOGGLE */
+      .language a {
+        text-decoration: none;
+        color: black;
+        font-size: 14px;
+      }
+
+      /* Hover Effects */
+      .language a:hover,
+      .nav-links a:hover {
+        color: #0cee72;
+      }
+
+      .mySlides {
+        display: none;
+        position: relative;
+        right: -100px;
+        top: 230px;
+      }
+
+      .mySlides img {
+        width: 675px;
+        height: 450px;
+      }
+
+      img {
+        vertical-align: middle;
+        top: 50px;
+      }
+
+      /* Slideshow container */
+      .slideshow-container {
+        max-width: 1000px;
+        position: relative;
+        margin: auto;
+      }
+      /* Next & previous buttons */
+      .prev,
+      .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+      }
+
+      /* Position the "next button" to the right */
+      .next {
+        right: -500px;
+        border-radius: 3px 0 0 3px;
+        scale: 20%;
+        top: 420px;
+      }
+      .prev {
+        left: -500px;
+        border-radius: 3px 0 0 3px;
+        rotate: 180deg;
+        scale: 20%;
+        top: 420px;
+      }
+
+      /* On hover, add a black background color with a little bit see-through */
+      .prev:hover,
+      .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .prev:hover {
+        transform: translateX(-30px);
+      }
+
+      .next:hover {
+        transform: translateX(30px); /* Move the right arrow to the left */
+      }
+
+      /* Caption text */
+      .text {
+        color: #f2f2f2;
+        font-size: 20px;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 100px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Number text (1/3 etc) */
+      .numbertext {
+        color: #f2f2f2;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+      }
+
+      /* The dots/bullets/indicators */
+      .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: block;
+        transition: background-color 0.6s ease;
+      }
+
+      .active,
+      .dot:hover {
+        background-color: #717171;
+      }
+
+      /* Fading animation */
+      .show {
+        animation: fade 1s ease-out forwards;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0.4;
+          transform: rotate(-10deg) translate(0px, 180px);
+        }
+        to {
+          opacity: 1;
+          transform: rotate(0deg) translate(0, 0);
+        }
+      }
+
+      /* On smaller screens, decrease text size */
+      @media only screen and (max-width: 300px) {
+        .prev,
+        .next,
+        .text {
+          font-size: 11px;
+        }
+      }
+
+      /* IMAGE-TO-VIDEO HOVER EFFECT */
+      .image-video-container {
+        position: relative;
+        width: 485px;
+        height: 250px; /* Adjust the height */
+        margin-top: 400px; /* Adjust space from carousel */
+        margin-bottom: 50px;
+        align-content: left;
+        left: -300px;
+      }
+
+      .photo-default {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none; /* Initially hidden */
+      }
+
+      .video-hover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-video-container:hover .video-container {
+        display: block;
+      }
+
+      .image-video-container:hover .photo-default {
+        display: none;
+      }
+      /* IMAGE-TO-VIDEO HOVER EFFECT */
+      .image-video-container-2 {
+        position: relative;
+        width: 485px;
+        height: 250px; /* Adjust the height */
+        margin-top: 60px; /* Adjust space from carousel */
+        margin-bottom: 50px;
+        align-content: left;
+        left: 300px;
+      }
+
+      .photo-default-2 {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .video-container-2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none; /* Initially hidden */
+      }
+
+      .video-hover-2 {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-video-container-2:hover .video-container-2 {
+        display: block;
+      }
+
+      .image-video-container-2:hover .photo-default-2 {
+        display: none;
+      }
+      .text-container {
+        box-sizing: border-box;
+        animation: upslide 10s ease;
+        margin-left: 20px;
+        position: relative;
+        left: -200px;
+      }
+      @keyframes upslide {
+        from {
+          opacity: 0.2;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .text-container {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+      }
+
+      .text-container.animate {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      .black {
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+        font-size: 55px;
+      }
+      .green {
+        position: relative;
+        color: #0cee72;
+        font-weight: 600;
+        font-size: 55px;
+        cursor: pointer;
+        z-index: 1;
+      }
+      .blacksmall {
+        font-size: 25px;
+        font-weight: 100;
+        position: relative;
+        top: 100px;
+      }
+      .hover-container {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .hover-text {
+        position: relative;
+        z-index: 1; /* Ensure text is above video */
+
+        color: #0cee72;
+        font-weight: 600;
+        font-size: 55px;
+      }
+      .hover-image {
+        position: absolute;
+        width: 550px;
+        height: 300px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .entire {
+        height: 550px;
+        width: 450px;
+      }
+
+      .entire .logo-container1 {
+        position: relative;
+        left: -450px;
+        top: 350px;
+
+      }
+      .entire1 {
+        height: 300px;
+        width: 500px;
+      }
+
+      .entire1 .logo-container1 {
+        position: relative;
+        left: 450px;
+        top: 150px;
+        
+      }
+      .entire2 {
+        position: relative;
+        left: -350px;
+        top: 150px;
+        
+      }
+      .entire2 .blab {
+        font-size:25px;
+        line-height: 40px;
+      }
+      .entire2 .learn{
+        font-size:17px;
+        position: relative;
+        top:50px;
+      }
+      .entire2 .arrow{
+        position: relative;
+         left:300px;
+         top: 32px;
+      }
+      .entire2 .moveitmoveit:hover{
+        color:#0cee72;
+        
+        transform: translateX(30px);
+        transition: 2s ease-out;
+        
+      }
+      
+        .entire3 {
+        height: 231px;
+        width: 185px;
+        
+      }
+
+      .entire3 .logo-container1 {
+        position: relative;
+        top: 200px;
+        left:-150px;
+        
+        
+      }
+      .events{
+        display: flex;
+        gap: 25px;
+        position: relative;
+        top: 500px;
+        padding:30px;
+        align-items: flex-start;
+        justify-content: flex-end;
+        left: 120px;
+
+      }
+      .events .one{
+          width:209px;
+          height:157px;
+
+      }
+      .events #hover:hover{
+        transform: translateY(-40px);
+        transition: ease-in-out 1s;
+      }
+      .events .two{
+          width:209px;
+          height:150px;
+
+      }
+      
+      
+
+      .events .three{
+          width:209px;
+          height:209px;
+
+      }
+      .events .four{
+          width:209px;
+          height:157px;
+
+      }
+      .events .five{
+          width:209px;
+          height:209px;
+
+      }
+      .upcoming {
+        position:relative;
+        top:300px;
+        left:-600px;
+        transform: rotate(-90deg);
+        font-size: 40px;
+        font-weight: 100;
+      }
+      .calender{
+        background: none;
+        border: 1px solid black;
+        padding: 5px 15px;
+        width: 222px;
+        height: 41px;
+        cursor: pointer;
+        border-radius: 25px;
+        font-size: 17px;
+        font-weight: 100;
+        position: relative;
+        left:550px;
+        top:75px;
+      }
+
+      .calender:hover {
+        border: 1px solid #0cee72;
+        background-color: #0cee72;
+        color: white;
+      }
+      .rotate{
+        transform: rotate(-45deg);
+        position: relative;
+        top:-89px;
+        left:25px;
+      }
+      .email{
+        box-sizing: border-box;
+        background-color:#0cee72;
+        height:300px;
+        position: relative;
+        top:500px;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+.footer{
+  box-sizing: border-box;
+  width:100%;
+  height:567px;
+  background-color:black;
+  position:relative;
+  top:500px;
+  
+  
+  
+}
+.footer img{
+  animation: animerotate 30s infinite ;
+  width:239px;
+  height:239px;
+  position: relative;
+  left: 50px;
+}
+ 
+  @keyframes animerotate {
+    from{
+      transform:rotate(0deg);
+    }
+    to{
+      transform:rotate(359deg);
+    }
+    
+  }
+  .footnote{
+       
+  }
+  .pfoot {
+    color:white;
+    position: relative;
+  left: 50px;
+  top:200px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:442px 442px;
+    justify-content: end;
+
+
+  }  
+  .grid p{
+    color:white;
+
+  }
+
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="menu-icon">☰</div>
+      <div class="nav-links">
+        <a href="#">VISIT</a>
+        <div class="box">
+          <div class="logo-container1">
+            <img class="logo-default" src="image copy 4.png" alt="Logo" />
+            <div class="logo-container2">
+              <img
+                class="logo-hover"
+                src="image copy 3.png"
+                alt="Logo on Hover"
+              />
+            </div>
+          </div>
+        </div>
+        <a href="#">VISION</a>
+      </div>
+
+      <div class="nav-right">
+        <button class="donate">DONATE</button>
+        <div class="language"><a href="#">ES</a> | <a href="#">中文</a></div>
+      </div>
+    </div>
+
+    <div class="slideshow-container">
+      <div class="mySlides fade">
+        <div class="numbertext">Phase One is free & open daily</div>
+
+        <img src="image.png" />
+        <div class="text">
+          Phase One is <br />free & open<br />
+          daily
+        </div>
+        <div class="text">Plan your visit</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">2 / 2</div>
+        <img src="image1.png" />
+        <div class="text">Caption Two</div>
+      </div>
+
+      <a class="prev" onclick="plusSlides(-1)"
+        ><img src="image copy 5.png"
+      /></a>
+      <a class="next" onclick="plusSlides(1)"><img src="image copy 5.png" /></a>
+    </div>
+    <br />
+
+    <div style="text-align: center">
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+
+    <!-- Image-to-Video Section (This is now below the carousel) -->
+    <div class="image-video-container">
+      <img class="photo-default" src="image copy.png" alt="Photo" />
+      <div class="video-container">
+        <video class="video-hover" src="video.mp4" muted loop autoplay></video>
+      </div>
+    </div>
+    <div class="image-video-container-2">
+      <img class="photo-default-2" src="image copy 2.png" alt="Photo" />
+      <div class="image-video-container-2">
+        <video
+          class="video-hover-2"
+          src="video.mp4"
+          muted
+          loop
+          autoplay
+        ></video>
+      </div>
+    </div>
+    <div class="text-container">
+      <p class="black">We are building a</p>
+      <div class="hover-container">
+        <p class="hover-text">three mile greenway</p>
+        <img class="hover-image" src="image copy 2.png" />
+      </div>
+
+      <p class="black">with three distinct sections</p>
+      <p class="black">across ten neighborhoods</p>
+
+      <p class="blacksmall">And there's a lot more to do</p>
+    </div>
+    <div class="entire">
+      <div class="logo-container1">
+        <img class="logo-default" src="theviaduct.png" alt="Logo" />
+        <div class="logo-container2">
+          <img class="logo-hover" src="thecut.png" alt="Logo on Hover" />
+        </div>
+      </div>
+    </div>
+    <div class="entire1">
+        <div class="logo-container1">
+          <img class="logo-default" src="thecut.png" alt="Logo" />
+          <div class="logo-container2">
+            <img class="logo-hover" src="TheTunnel.png" alt="Logo on Hover" />
+          </div>
+        </div>
+      </div>
+      <div class="entire2">
+        <p class="blab">Our full vision for the Rail Park is to<br> create a three-mile greenway with<br> three sections: The Viaduct, The Cut,<br> and The Tunnel. It will reach from <br>Northern Liberties to Fairmount Park,<br> with pathways and gathering spaces<br> that will serve pedestrians, bicyclists,<br> neighbors, and visitors alike.</p>
+        <div class="moveitmoveit">
+        <p class="learn">Learn more about the full version</p>
+        <p class="arrow">&#8594</p></div>
+    </div>
+    <div class="entire3">
+        <div class="logo-container1">
+          <img class="logo-default" src="TheTunnel.png" alt="Logo" />
+          <div class="logo-container2">
+            <img class="logo-hover" src="theviaduct.png" alt="Logo on Hover" />
+          </div>
+        </div>
+      </div>
+
+      <div class="events" >
+        <div class="box1">
+        <img class="one"  id="hover" src="image copy 8.png"/>
+        <p>Thursday,April 10,2025</p>
+        <p>Volunteer<br> Happy Hour</p>
+        <p>Details</p>
+        <p class="rotate">&#8594</p>
+        
+        </div>
+        <div class="box2">
+        <img class="two" id="hover" src="image copy 7.png"/>
+        <p>Saturday,April 12,2025</p>
+        <p>Three Mile<br> Vision Tour</p>
+        <p>Details</p>
+        <p class="rotate">&#8594</p>
+
+        </div>
+        <div class="box3">
+        <img class="three" id="hover" src="image copy 6.png"/>
+        <p>Saturday,April 26,2025</p>
+        <p>Environmental <br>Justice Tour</p>
+        <p>Details</p>
+        <p class="rotate">&#8594</p>
+        </div>
+        <div class="box4">
+        <img class="four" id="hover" src="image copy 9.png"/>
+        <p>Saturday,May 10,2025</p>
+        <p>Spring Love<br> Your Park<br> Cleanup</p>
+        <p>Details</p>
+        <p class="rotate">&#8594</p>
+        </div>
+        <div class="box5">
+        <img class="five"  id="hover" src="image copy 7.png"/>
+        <p>Saturday,May 17,2025</p>
+        <p>Three Mile<br> Vision Tour</p>
+        <p>Details</p>
+        <p class="rotate">&#8594</p>
+        </div>
+      </div>
+      <div class="upcoming">Upcoming Events</div>
+      <div class="button">
+        <button class="calender">Full Event Calender &#8594</button>
+
+      </div>
+    <div class="email">
+      <p>Be the first one to know about news, events and progress</p>
+      <input type="email" id="email" name="email" placeholder="Enter your Email" required >
+
+    </div>
+    <div class="footer">
+        <div > 
+          <img src="image copy 10.png"/>
+    
+          <div class="footnote">
+          <p class="pfoot">© 2025 Friends of the Rail Park<br><br>The Friends of the Rail Park is a 501(c)3.<br>
+          All donations are tax-deductible.</p>
+          </div>
+        </div>
+        <div class="grid">
+        
+        <div class="grid1">
+          <p>Hours & Info</p><br><br>
+          <p>Free and open daily<br>7:00 am – 10:00 pm</p>
+        </div>
+        <div class="grid2">
+
+        <p>Say Hello</p>
+        <br><br>
+        <a  class="linktomail" href="mailto:friends@therailpark.org">friends@therailpark.org</a><br>
+        <a  class="linktocall" href="tel:215-485-2221">215-485-2221</a>
+      
+    </div>
+    <div class="grid3"><p>Entrance</p><br><br>
+      <p>N. Broad & Noble Streets<br>
+        Philadelphia, PA 19123</p></div>
+    
+    <div class="grid4"><p>Office</p><br><br> <a  class="maps" href="https://goo.gl/maps/CTg6nuB66NcDZDAs6">1219 Vine Street, Suite M<br>
+      Philadelphia, PA 19107</a></div>
+      <div class="grid5">
+        <p>Translations</p>p><br><br>
+          </div>
+    <div class="grid6">
+      
+    </div>
+
+      </div>
+    </div>
+    <script>
+      let slideIndex = 1;
+      showSlides(slideIndex);
+
+      function plusSlides(n) {
+        showSlides((slideIndex += n));
+      }
+
+      function currentSlide(n) {
+        showSlides((slideIndex = n));
+      }
+
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName('mySlides');
+        let dots = document.getElementsByClassName('dot');
+
+        if (n > slides.length) {
+          slideIndex = 1;
+        }
+        if (n < 1) {
+          slideIndex = slides.length;
+        }
+
+        // Hide all slides and remove the 'show' class
+        for (i = 0; i < slides.length; i++) {
+          slides[i].classList.remove('show'); // Remove 'show' class to trigger fade-out
+          slides[i].style.display = 'none';
+        }
+
+        // Remove the 'active' class from dots
+        for (i = 0; i < dots.length; i++) {
+          dots[i].classList.remove('active');
+        }
+
+        // Show the current slide and add the 'show' class for fade-in
+        slides[slideIndex - 1].style.display = 'block';
+        slides[slideIndex - 1].classList.add('show');
+
+        // Add active class to the corresponding dot
+        dots[slideIndex - 1].classList.add('active');
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        const hoverContainer = document.querySelector('.hover-container');
+        const hoverImage = document.querySelector('.hover-image');
+
+        if (!hoverContainer || !hoverImage) {
+          console.error('Hover container or image not found.');
+          return;
+        }
+
+        hoverContainer.addEventListener('mouseenter', function () {
+          hoverImage.style.opacity = '1';
+        });
+
+        hoverContainer.addEventListener('mousemove', function (e) {
+          const rect = hoverContainer.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+
+          hoverImage.style.transform = `translate(${
+            mouseX - hoverImage.clientWidth / 2
+          }px, ${mouseY - hoverImage.clientHeight / 2}px)`;
+        });
+
+        hoverContainer.addEventListener('mouseleave', function () {
+          hoverImage.style.opacity = '0';
+        });
+      });
+
+      const textContainer = document.querySelector('.text-container');
+
+      const observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              textContainer.classList.add('animate');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null, // Uses the viewport
+          rootMargin: '0px', // No extra margin
+        }
+      );
+
+      observer.observe(textContainer);
+    </script>
+  <!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
